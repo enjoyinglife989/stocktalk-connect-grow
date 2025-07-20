@@ -1,6 +1,8 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { useAuth } from "@/hooks/useAuth";
+import { Link } from "react-router-dom";
 import { 
   Shield, 
   Users, 
@@ -11,6 +13,7 @@ import {
 } from "lucide-react";
 
 export const AuthSection = () => {
+  const { user } = useAuth();
   const features = [
     {
       icon: <Shield className="h-6 w-6" />,
@@ -39,7 +42,7 @@ export const AuthSection = () => {
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto text-center mb-16">
           <Badge className="mb-4 bg-primary/10 text-primary border-primary/20">
-            Supabase 통합 필요
+            {user ? "환영합니다!" : "회원가입하고 시작하세요"}
           </Badge>
           <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
             지금 시작하세요
@@ -105,12 +108,14 @@ export const AuthSection = () => {
                   variant="outline" 
                   size="lg" 
                   className="w-full bg-primary-foreground/20 border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/30"
-                  disabled
+                  asChild
                 >
-                  Supabase 연결 후 이용 가능
+                  <Link to="/auth">
+                    지금 시작하기
+                  </Link>
                 </Button>
                 <p className="text-xs text-primary-foreground/70">
-                  * 인증 기능을 위해 Supabase 통합이 필요합니다
+                  {user ? "* 이미 로그인되어 있습니다" : "* 무료 가입으로 모든 기능을 이용하세요"}
                 </p>
               </div>
             </Card>
@@ -125,14 +130,15 @@ export const AuthSection = () => {
                 <Shield className="h-6 w-6 text-accent" />
               </div>
               <div>
-                <h4 className="font-semibold mb-2 text-accent">개발자 안내</h4>
+                <h4 className="font-semibold mb-2 text-accent">시작하기</h4>
                 <p className="text-foreground/80 mb-3">
-                  인증 시스템 구현을 위해 Supabase 통합이 필요합니다. 
-                  상단의 Supabase 버튼을 클릭하여 연결하세요.
+                  {user ? "프로필을 설정하고 다양한 투자 정보를 공유해보세요." : "지금 가입하고 투자 커뮤니티에 참여해보세요."}
                 </p>
-                <Button variant="outline" size="sm" className="group">
-                  Supabase 통합 가이드
-                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                <Button variant="outline" size="sm" className="group" asChild>
+                  <Link to={user ? "/" : "/auth"}>
+                    {user ? "커뮤니티 둘러보기" : "회원가입하기"}
+                    <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                  </Link>
                 </Button>
               </div>
             </div>
